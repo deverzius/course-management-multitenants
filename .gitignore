@@ -48,3 +48,6 @@ pnpm-lock.yaml
 
 # build
 dist/
+
+note.txt
+.env
