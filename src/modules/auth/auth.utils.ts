@@ -1,6 +1,7 @@
 import { TOKEN_TYPE } from 'src/constants';
 import { JwtPayload } from './dto';
 import { JwtService } from '@nestjs/jwt';
+import * as bcrypt from 'bcrypt';
 
 interface IJwtReturnType {
   accessToken: string;
@@ -15,8 +16,8 @@ export class AuthUtils {
 
   public static getInstance(): AuthUtils {
     if (!this.instance) {
-			this.instance = new AuthUtils();
-			this.jwtService = new JwtService();
+      this.instance = new AuthUtils();
+      this.jwtService = new JwtService();
     }
 
     return this.instance;
@@ -58,5 +59,13 @@ export class AuthUtils {
     }
 
     return true;
+  }
+
+  async hashPassword(password: string): Promise<string> {
+    return await bcrypt.hash(password, await bcrypt.genSalt());
+  }
+
+  async comparePassword(password: string, hash: string): Promise<boolean> {
+    return await bcrypt.compare(password, hash);
   }
 }

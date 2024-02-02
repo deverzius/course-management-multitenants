@@ -29,7 +29,7 @@ export class AuthService {
     if (!tenant) {
       throw new BadRequestException('Tenant not found');
     }
-    if (tenant.password !== password) {
+    if (await AuthUtils.getInstance().comparePassword(password, tenant.password) === false){
       throw new BadRequestException('Invalid password');
     }
 
@@ -48,6 +48,7 @@ export class AuthService {
 
   async createTenant(createTenantDto: CreateTenantDto): Promise<Tenant> {
     const tenant = new Tenant(createTenantDto);
+    tenant.password = await AuthUtils.getInstance().hashPassword(tenant.password);
 
     const result: Tenant = await this.tenantsRepository
       .save(tenant)
@@ -71,7 +72,7 @@ export class AuthService {
     if (!user) {
       throw new BadRequestException('User not found');
     }
-    if (user.password !== password) {
+    if (await AuthUtils.getInstance().comparePassword(password, user.password) === false) {
       throw new BadRequestException('Invalid password');
     }
 
@@ -90,6 +91,7 @@ export class AuthService {
 	
 	async createUser(createUserDto: CreateUserDto): Promise<User> {
     const user = new User(createUserDto);
+    user.password = await AuthUtils.getInstance().hashPassword(user.password);
 
     const result = await this.usersRepository
       .save(user)
