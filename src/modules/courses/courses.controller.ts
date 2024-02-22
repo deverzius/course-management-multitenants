@@ -1,34 +1,26 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Headers } from '@nestjs/common';
 import { CoursesService } from './courses.service';
 import { CreateCourseDto } from './dto/create-course.dto';
 import { UpdateCourseDto } from './dto/update-course.dto';
+import { TENANT_HEADER } from 'src/constants';
 
 @Controller('courses')
 export class CoursesController {
-  constructor(private readonly coursesService: CoursesService) {}
+  constructor(private readonly coursesService: CoursesService) { }
 
-  @Post()
-  create(@Body() createCourseDto: CreateCourseDto) {
-    return this.coursesService.create(createCourseDto);
+  @Get(':tenant-id/:id')
+  get(@Param('tenant-id') tenantId: string, @Param('id') courseId: string) {
+    return this.coursesService.findOne(tenantId, courseId);
+  }
+
+  @Post('new')
+  create(@Body() createCourseDto: CreateCourseDto, @Headers(TENANT_HEADER) tenantId: string) {
+    console.log(tenantId)
+    return this.coursesService.create(tenantId, createCourseDto);
   }
 
   @Get()
-  findAll() {
+  getAll() {
     return this.coursesService.findAll();
-  }
-
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.coursesService.findOne(+id);
-  }
-
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateCourseDto: UpdateCourseDto) {
-    return this.coursesService.update(+id, updateCourseDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.coursesService.remove(+id);
   }
 }

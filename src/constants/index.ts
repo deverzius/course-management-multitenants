@@ -1,4 +1,5 @@
 export const TENANT_HEADER = 'x-tenant-id';
+export const DATA_SOURCE_TENANT = 'DATA_SOURCE_TENANT';
 
 export enum ROLE {
 	ADMIN = 'admin',
