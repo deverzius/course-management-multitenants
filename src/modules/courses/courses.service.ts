@@ -9,37 +9,23 @@ import { DATA_SOURCE_TENANT } from 'src/constants';
 @Injectable({scope: Scope.REQUEST})
 export class CoursesService {
   constructor(
-    // @InjectRepository(Course)
     @InjectRepository(Course)
     private readonly courseRepository: Repository<Course>,
     @Inject(DATA_SOURCE_TENANT)
     private readonly dataSource: DataSource,
   ) {}
 
-  create(tenantId: string, createCourseDto: CreateCourseDto) {
-    const schemaName = `tenant_${tenantId}`;
-    const tableName = `${schemaName}.courses`
-    console.log(tenantId)
-
-    // const result = this.courseRepository.query(`INSERT INTO "${tenantId}".courses`)
-
-    const result = this.courseRepository
-      .createQueryBuilder(tableName)
-      .insert()
-      .values(createCourseDto)
-      .execute();
-    
+  create(createCourseDto: CreateCourseDto) {
+    const result = this.dataSource.getRepository(Course).save(createCourseDto);
     return result;
   }
 
-  async findAll() {
-    return await this.dataSource.getRepository(Course).find()
+  findAll() {
+    return this.dataSource.getRepository(Course).find()
   }
 
-  async findOne(tenantId: string, courseId: string) {
-    return await this.courseRepository.query(`SELECT * FROM ${tenantId}.courses WHERE id = ${courseId}`)
-      .then(res => res)
-      .catch(err => []);
+  findOne(courseId: string) {
+    return this.dataSource.getRepository(Course).findOne({where: {courseId: courseId}});
   }
 
   update(id: number, updateCourseDto: UpdateCourseDto) {

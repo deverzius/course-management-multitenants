@@ -32,7 +32,6 @@ import { checkTenantId } from 'src/middlewares/check-tenant-id.middleware';
   controllers: [CoursesController],
 })
 
-// export class CoursesModule {}
 export class CoursesModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
     consumer
