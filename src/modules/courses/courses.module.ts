@@ -1,15 +1,15 @@
 import { MiddlewareConsumer, Module, Scope } from '@nestjs/common';
-import { CoursesService } from './courses.service';
-import { CoursesController } from './courses.controller';
+import { NestModule } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { CoursesService } from './courses.service';
+import { CoursesController } from './courses.controller';
 import { configOrm } from 'src/config';
 import { Course } from './entities/course.entity';
 import { DATA_SOURCE_TENANT } from 'src/constants';
-import { DataSource } from 'typeorm';
 import { CourseDataSourceFactory } from './courses.factory';
-import { NestModule } from '@nestjs/common';
 import { checkTenantId } from 'src/middlewares/check-tenant-id.middleware';
+import { checkToken } from 'src/middlewares/check-token.middleware';
 
 @Module({
   imports: [
@@ -27,7 +27,7 @@ import { checkTenantId } from 'src/middlewares/check-tenant-id.middleware';
         return await courseDataSourceFactory.create();
       },
       inject: [CourseDataSourceFactory],
-    },
+    }
   ],
   controllers: [CoursesController],
 })
@@ -35,7 +35,7 @@ import { checkTenantId } from 'src/middlewares/check-tenant-id.middleware';
 export class CoursesModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
     consumer
-      .apply(checkTenantId)
+      .apply(checkTenantId, checkToken)
       .forRoutes('/courses');
   }
 }

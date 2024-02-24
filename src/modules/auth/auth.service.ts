@@ -11,7 +11,7 @@ import { ReturnUserDto } from '../users/dto/return-user.dto';
 import { CreateTenantDto } from '../tenants/dto/create-tenant.dto';
 import { CreateUserDto } from '../users/dto/create-user.dto';
 
-import { AuthUtils } from './auth.utils';
+import { AuthUtils } from '../../utils/auth.utils';
 import { ROLE } from 'src/constants';
 
 @Injectable()
@@ -102,10 +102,5 @@ export class AuthService {
       });
 
     return result;
-  }
-
-  async test(headers: Headers) {
-    const accessToken = headers['authorization'].split(' ')[1];
-    return AuthUtils.getInstance().verifyAccessToken(accessToken);
   }
 }

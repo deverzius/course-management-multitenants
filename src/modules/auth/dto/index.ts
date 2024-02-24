@@ -1,4 +1,4 @@
-import { ROLE } from "src/constants";
+import { ROLE, TOKEN_TYPE } from "src/constants";
 
 export type LoginInfo = {
 	username: string;
@@ -9,5 +9,6 @@ export type LoginInfo = {
 export type JwtPayload = {
 	id: string;
 	username: string;
+	type?: TOKEN_TYPE;
 	role: ROLE;
 };

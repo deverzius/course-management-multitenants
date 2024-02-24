@@ -9,5 +9,6 @@ export function checkTenantId(req: Request, res: Response, next: NextFunction) {
 	if (!tenantId || !uuidRegex.test(tenantId)) {
 		return next(new BadRequestException('Missing or invalid Tenant ID'));
 	}
+	
 	next();
 }

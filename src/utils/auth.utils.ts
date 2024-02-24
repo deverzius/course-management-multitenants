@@ -1,5 +1,5 @@
 import { TOKEN_TYPE } from 'src/constants';
-import { JwtPayload } from './dto';
+import { JwtPayload } from '../modules/auth/dto';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 
@@ -10,21 +10,26 @@ interface IJwtReturnType {
 
 export class AuthUtils {
   private static instance: AuthUtils;
-  private static jwtService: JwtService;
+  private jwtService: JwtService;
 
   private constructor() {}
 
   public static getInstance(): AuthUtils {
     if (!this.instance) {
       this.instance = new AuthUtils();
-      this.jwtService = new JwtService();
     }
-
     return this.instance;
   }
 
+  private getJwtService(): JwtService { 
+    if (!this.jwtService) {
+      this.jwtService = new JwtService();
+    }
+    return this.jwtService;
+  }
+
   private generateToken(payload: JwtPayload, tokenType: TOKEN_TYPE): string {
-    return AuthUtils.jwtService.sign(
+    return this.getJwtService().sign(
       {
         id: payload.id,
         username: payload.username,
@@ -48,17 +53,20 @@ export class AuthUtils {
     };
   }
 
-  verifyAccessToken(accessToken: string): boolean {
+  verifyToken(token: string): boolean {
     try {
-      AuthUtils.jwtService.verify(accessToken, {
+      this.getJwtService().verify(token, {
         secret: process.env.SECRET_KEY,
       });
     } catch (error) {
-      console.log(error);
       return false;
     }
-
     return true;
+  }
+
+  getTokenType(token: string): TOKEN_TYPE {
+    const payload = this.getJwtService().decode(token) as JwtPayload;
+    return payload.type;
   }
 
   async hashPassword(password: string): Promise<string> {

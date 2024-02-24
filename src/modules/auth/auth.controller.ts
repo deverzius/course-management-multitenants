@@ -28,8 +28,8 @@ export class AuthController {
     return this.authService.createUser(createUserDto);
   }
 
-  @Post('/test')
-  test(@Headers() headers: Headers ){
-    return this.authService.test(headers);
-  }
+  // @Post('/test')
+  // test(@Headers() headers: Headers ){
+  //   return this.authService.test(headers);
+  // }
 }
