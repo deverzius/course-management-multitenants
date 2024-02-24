@@ -5,10 +5,3 @@ export type LoginInfo = {
 	password: string;
 	role?: ROLE;
 };
-
-export type JwtPayload = {
-	id: string;
-	username: string;
-	type?: TOKEN_TYPE;
-	role: ROLE;
-};

@@ -10,6 +10,8 @@ import { DATA_SOURCE_TENANT } from 'src/constants';
 import { CourseDataSourceFactory } from './courses.factory';
 import { checkTenantId } from 'src/middlewares/check-tenant-id.middleware';
 import { checkToken } from 'src/middlewares/check-token.middleware';
+import { APP_GUARD } from '@nestjs/core';
+import { RolesGuard } from 'src/guards/roles.guard';
 
 @Module({
   imports: [
@@ -27,6 +29,10 @@ import { checkToken } from 'src/middlewares/check-token.middleware';
         return await courseDataSourceFactory.create();
       },
       inject: [CourseDataSourceFactory],
+    },
+    {
+      provide: APP_GUARD,
+      useClass: RolesGuard
     }
   ],
   controllers: [CoursesController],

@@ -1,11 +1,17 @@
-import { TOKEN_TYPE } from 'src/constants';
-import { JwtPayload } from '../modules/auth/dto';
+import { ROLE, TOKEN_TYPE } from 'src/constants';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 
 interface IJwtReturnType {
   accessToken: string;
   refreshToken: string;
+}
+
+interface JwtPayload {
+  id: string;
+  username: string;
+  type?: TOKEN_TYPE;
+  role: ROLE;
 }
 
 export class AuthUtils {
@@ -21,7 +27,7 @@ export class AuthUtils {
     return this.instance;
   }
 
-  private getJwtService(): JwtService { 
+  private getJwtService(): JwtService {
     if (!this.jwtService) {
       this.jwtService = new JwtService();
     }
@@ -67,6 +73,10 @@ export class AuthUtils {
   getTokenType(token: string): TOKEN_TYPE {
     const payload = this.getJwtService().decode(token) as JwtPayload;
     return payload.type;
+  }
+
+  decodeToken(token: string): JwtPayload {
+    return this.getJwtService().decode(token);
   }
 
   async hashPassword(password: string): Promise<string> {

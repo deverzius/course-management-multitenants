@@ -4,7 +4,7 @@ import { UpdateCourseDto } from './dto/update-course.dto';
 import { InjectDataSource, InjectRepository } from '@nestjs/typeorm';
 import { Course } from './entities/course.entity';
 import { DataSource, EntitySchema, Repository } from 'typeorm';
-import { DATA_SOURCE_TENANT } from 'src/constants';
+import { DATA_SOURCE_TENANT, ROLE } from 'src/constants';
 
 @Injectable({scope: Scope.REQUEST})
 export class CoursesService {

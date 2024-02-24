@@ -10,8 +10,7 @@ import { ReturnTenantDto } from '../tenants/dto/return-tenant.dto';
 import { ReturnUserDto } from '../users/dto/return-user.dto';
 import { CreateTenantDto } from '../tenants/dto/create-tenant.dto';
 import { CreateUserDto } from '../users/dto/create-user.dto';
-
-import { AuthUtils } from '../../utils/auth.utils';
+import { AuthUtils } from 'src/utils/auth.utils';
 import { ROLE } from 'src/constants';
 
 @Injectable()
