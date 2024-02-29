@@ -28,11 +28,11 @@ export class CoursesService {
     return this.dataSource.getRepository(Course).findOne({where: {courseId: courseId}});
   }
 
-  update(id: number, updateCourseDto: UpdateCourseDto) {
-    return `This action updates a #${id} course`;
+  update(id: string, updateCourseDto: UpdateCourseDto) {
+    return this.dataSource.getRepository(Course).update(id, updateCourseDto);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} course`;
+  remove(id: string) {
+    return this.dataSource.getRepository(Course).delete(id);
   }
 }

@@ -9,6 +9,7 @@ import {
   Headers,
   Query,
   InternalServerErrorException,
+  BadRequestException,
 } from '@nestjs/common';
 import { CoursesService } from './courses.service';
 import { CreateCourseDto } from './dto/create-course.dto';
@@ -32,5 +33,21 @@ export class CoursesController {
   @Post()
   create(@Body() createCourseDto: CreateCourseDto) {
     return this.coursesService.create(createCourseDto);
+  }
+
+  @Patch()
+  update(@Query('id') id: string, @Body() updateCourseDto: UpdateCourseDto) {
+    if (!id) {
+      return new BadRequestException()
+    }
+    return this.coursesService.update(id, updateCourseDto);
+  }
+
+  @Delete()
+  delete(@Query('id') id: string) {
+    if (!id) {
+      return new BadRequestException()
+    }
+    return this.coursesService.remove(id);
   }
 }
