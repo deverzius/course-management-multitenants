@@ -4,8 +4,7 @@ export const DATA_SOURCE_TENANT = 'DATA_SOURCE_TENANT';
 export enum ROLE {
 	ADMIN = 'admin',
 	TENANT = 'tenant',
-	INSTRUCTOR = 'instructor',
-	TEACHING_ASSISTANT = 'teaching_assistant',
+	TENANT_USER = 'tenant_user',
 	LEARNER = 'learner',
 }
 
